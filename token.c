@@ -1,5 +1,5 @@
 
-
+// NOTE TO SELF: Try to finish MCO1 after wednesday exam
 #ifndef CCDSALG_H
 #define CCDSALG_H
 
