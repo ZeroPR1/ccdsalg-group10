@@ -174,3 +174,76 @@ ErrorStatus infixToPostfix(Queue* infix, Queue* postfix){
 
   return status;
 }
+
+ErrorStatus evaluatePostfix(Queue* postfix, int* result){
+  ErrorStatus status = ERR_NONE;
+  Stack evalStack = CreateStack();
+  int keepGoing = 1;
+
+  while (!isEmptyQueue(postfix) && keepGoing == 1){
+    Token t = Dequeue(postfix);
+
+    if (t.type == TOKEN_OPERAND){
+      Push(&evalStack, t);
+    }
+
+    else if(t.type == TOKEN_OPERATOR){
+      if (evalStack.top < 1){
+        status = ERR_MALFORMED;
+        keepGoing = 0;
+      } else {
+        Token rightToken = Pop(&evalStack);
+        Token leftToken = Pop(&evalStack);
+
+        int right = rightToken.value;
+        int left = leftToken.value;
+        int calcResult = 0;
+        int calcSuccess = 1;
+
+        switch (t.symbol){
+          case '+': calcResult = left + right; break;
+          case '-': calcResult = left - right; break;
+          case '*': calcResult = left * right; break;
+          case '^': calcResult = (int)pow(left, right); break;
+          case '/':
+              if (right == 0){
+                status = ERR_DIV_ZERO;
+                calcSuccess = 0;
+                keepGoing = 0;
+              } else {
+                calcResult = left / right;
+              }
+              break;
+          case '%':
+              if (right == 0){
+                status = ERR_DIV_ZERO;
+                calcSuccess = 0;
+                keepGoing = 0;
+              } else {
+                calcResult = left % right;
+              }
+              break;
+        }
+
+        if (calcSuccess == 1){
+          Token resToken;
+          resToken.type = TOKEN_OPERAND;
+          resToken.value = calcResult;
+          resToken.symbol = '\0';
+          Push(&evalStack, resToken);
+        }
+      }
+    }
+  }
+
+  if(keepGoing == 1){
+    if (evalStack.top == 0){
+      Token finalToken = Pop(&evalStack);
+      *result = finalToken.value;
+    } else {
+      status = ERR_MALFORMED;
+    }
+  }
+
+  return status;
+}
