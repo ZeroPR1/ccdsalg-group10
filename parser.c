@@ -23,25 +23,41 @@ ErrorStatus tokenize(const char* input,  Queue* outputQueue){
     int len = strlen(input); //calculate the total number of characters
     int keepGoing = 1; //assigned variable to control the main loop
 
+  //loop continues as long as we haven't reached the end and no errors have triggered it to stop
     while (i < len && keepGoing == 1){
-      char c = input[i];
-      if (isSpaceCustom(c)){
-        i = i + 1;
+      char c = input[i]; //extracts the single character at the current index
+      if (isSpaceCustom(c)){ //skips spaces
+        i = i + 1; //move the index forward to ignore the space
       }
-      else if (isDigitCustom(c)){
-            int num = 0;
+      else if (isDigitCustom(c)){ //parses multi digit numbers
+            int num = 0; //temporary variable to build our full integer
+
+      //loop while we havent reached the end and the current character is a digit
       while  (i < len && isDigitCustom(input[i])){
+        
+        //multiplies the current number by 10 to shift digits left, then add the actual integer value
         num = (num * 10) + (input[i] - '0');
-        i = i + 1;
+        i = i + 1; //moves on to the next character
         }
-        Token t;
-        t.type = TOKEN_OPERAND;
-        t.value = num;
-        t.symbol = '\0';
+        Token t; //declares a new token
+        t.type = TOKEN_OPERAND; //set type to signify its a number
+        t.value = num; //store the fully built integer
+        t.symbol = '\0'; //null character since numbers dont use symbols
         Enqueue(outputQueue, t);
       }
 
+      //parses left parenthesis
       else if(c == '('){
+        Token t;
+        t.type = TOKEN_LPAREN;
+        t.value = 0;
+        t.symbol = c;
+        Enqueue(outputQueue, t);    
+        i = i + 1;
+      }
+        
+      //parses right parenthesis
+      else if(c == ')'){
         Token t;
         t.type = TOKEN_RPAREN;
         t.value = 0;
@@ -49,6 +65,8 @@ ErrorStatus tokenize(const char* input,  Queue* outputQueue){
         Enqueue(outputQueue, t);    
         i = i + 1;
       }
+
+      //parses operators
       else if(c == '+' || c == '-' || c == '*' || c == '/' || c == '%' || c == '^'){
         Token t;
         t.type = TOKEN_OPERATOR;
@@ -57,9 +75,11 @@ ErrorStatus tokenize(const char* input,  Queue* outputQueue){
         Enqueue(outputQueue, t);    
         i = i + 1;        
       }
+
+      //catches invalid characters
       else {
         status = ERR_INVALID_CHAR;
-        keepGoing = 1;
+        keepGoing = 1; // kills the loop
       }
     }
 
