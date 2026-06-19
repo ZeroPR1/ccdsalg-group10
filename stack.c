@@ -70,13 +70,13 @@ Token Pop(Stack *S)
 Token Top(Stack *S) 
 {
     // Initialize Token to be returned if the Stack is empty
-    Token getTop = {TOKEN_OPERAND, 0, '\0'}; 
+    Token topToken = {TOKEN_OPERAND, 0, '\0'}; 
 
     // If the Stack is not empty
     if (!isEmptyStack(S)) 
     {
-        getTop = S->array[S->top]; // Get the top Token
+        topToken = S->array[S->top]; // Get the top Token
     }
 
-    return getTop;
+    return topToken;
 }
