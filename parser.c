@@ -183,12 +183,12 @@ ErrorStatus evaluatePostfix(Queue* postfix, int* result){
   while (!isEmptyQueue(postfix) && keepGoing == 1){
     Token t = Dequeue(postfix);
 
-    if (t.type == TOKEN_OPERAND){
+    if (t.type == TOKEN_OPERAND){ //if its a number, it pushes it to the evaulation stack
       Push(&evalStack, t);
     }
 
-    else if(t.type == TOKEN_OPERATOR){
-      if (evalStack.top < 1){
+    else if(t.type == TOKEN_OPERATOR){ // if its an operator, pop two numbers and do the math
+      if (evalStack.top < 1){ //checks if we have at least two numbers to work with
         status = ERR_MALFORMED;
         keepGoing = 0;
       } else {
@@ -225,7 +225,7 @@ ErrorStatus evaluatePostfix(Queue* postfix, int* result){
               break;
         }
 
-        if (calcSuccess == 1){
+        if (calcSuccess == 1){ //if the math worked, push the new result back to the stack
           Token resToken;
           resToken.type = TOKEN_OPERAND;
           resToken.value = calcResult;
@@ -236,11 +236,11 @@ ErrorStatus evaluatePostfix(Queue* postfix, int* result){
     }
   }
 
-  if(keepGoing == 1){
+  if(keepGoing == 1){//end of loop, should be exactly one number left on the stack
     if (evalStack.top == 0){
       Token finalToken = Pop(&evalStack);
       *result = finalToken.value;
-    } else {
+    } else { //if there are multiple numbers left, the expression is malformed
       status = ERR_MALFORMED;
     }
   }
