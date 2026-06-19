@@ -4,7 +4,7 @@
 Stack CreateStack() 
 {
     Stack S;  // Create a new Stack
-    S.top = -1; // Initialize the top index to -1 to indicate that the Stack is empty
+    S.top = -1; // Initialize the top index to -1 (Stack is empty)
     
     return S;
 }
