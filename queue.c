@@ -61,8 +61,9 @@ Token Dequeue(Queue *Q)
     // If the Queue is not empty
     if (!isEmptyQueue(Q)) 
     {
-        Q->head = (Q->head + 1) % MAX_TOKENS; // Increment the head index
+        
         dequeuedToken = Q->array[Q->head]; // Get the Token to be dequeued
+        Q->head = (Q->head + 1) % MAX_TOKENS; // Increment the head index
         Q->size--; // Decrement the size of the Queue
     }
 
