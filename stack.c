@@ -66,7 +66,7 @@ Token Pop(Stack *S)
     return poppedToken;
 }
 
-// Function that gets the top Token of the Stack
+// Function that returns the top Token of the Stack
 Token Top(Stack *S) 
 {
     // Initialize Token to be returned if the Stack is empty
