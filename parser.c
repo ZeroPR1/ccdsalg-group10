@@ -112,16 +112,16 @@ ErrorStatus infixToPostfix(Queue* infix, Queue* postfix){
   Stack opStack = CreateStack(); //Uses CreateStack from stack.c
   int keepGoing = 1;
 
-  while (!isEmptyQueue(infix) && keepGoing == 1){
+  while (!isEmptyQueue(infix) && keepGoing == 1){ //processes everry tokne in the infix queue
     Token t = Dequeue(infix);
 
-    if (t.type == TOKEN_OPERAND){
+    if (t.type == TOKEN_OPERAND){ //if its a number, it goes straight to the output queue
       Enqueue(postfix, t);
     }
-    else if (t.type == TOKEN_LPAREN){
+    else if (t.type == TOKEN_LPAREN){ //if its a left parenthesis, it pushes it to the stack
       Push(&opStack, t);
     }
-    else if (t.type == TOKEN_OPERATOR){
+    else if (t.type == TOKEN_OPERATOR){ //if its an operator, it handles the precedence rules
       int processingOps = 1;
       while (!isEmptyStack(&opStack) && processingOps == 1){
         Token topOp = Top(&opStack);
@@ -131,19 +131,19 @@ ErrorStatus infixToPostfix(Queue* infix, Queue* postfix){
           int precTop = getPrecedence(topOp.symbol);
           int isRightAssoc = isRightAssociative(t.symbol);
 
-          if ((!isRightAssoc && precT <= precTop) || (isRightAssoc && precT < precTop)){
+          if ((!isRightAssoc && precT <= precTop) || (isRightAssoc && precT < precTop)){ //checks if we need to pop the top operator to the output queue
             Enqueue(postfix, Pop(&opStack));
           } else {
-            processingOps = 0;
+            processingOps = 0; //stops checking the stack
           }
         } else {
-          processingOps = 0;
+          processingOps = 0; //stops if its a parenthesis
         }
       }
 
-      Push(&opStack, t);
+      Push(&opStack, t); //push the current operator to the stack
     }
-    else if (t.type == TOKEN_RPAREN){
+    else if (t.type == TOKEN_RPAREN){ //if its a right parenthesis, pop the operators until we find the left parenthesis
       int foundLparen = 0;
       while (!isEmptyStack(&opStack) && foundLparen == 0){
         Token popped = Pop(&opStack);
@@ -154,17 +154,17 @@ ErrorStatus infixToPostfix(Queue* infix, Queue* postfix){
         }
       }
 
-      if (foundLparen == 0){
+      if (foundLparen == 0){ //if the stack empties without finding a left parenthesis, the parentheses are mismatched
         status = ERR_MISMATCH_PAREN;
         keepGoing = 0;
       }
     }
   }
 
-  while(!isEmptyStack(&opStack) && keepGoing == 1){
+  while(!isEmptyStack(&opStack) && keepGoing == 1){ //after reading the whole queue, it will pop any remaining operators to the output
     Token popped = Pop(&opStack);
 
-    if (popped.type == TOKEN_LPAREN || popped.type == TOKEN_RPAREN){
+    if (popped.type == TOKEN_LPAREN || popped.type == TOKEN_RPAREN){ //if theres a prenthesis left on the stack, its a mismatch
       status = ERR_MISMATCH_PAREN;
       keepGoing = 0;
     } else {
