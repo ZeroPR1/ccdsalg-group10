@@ -1,4 +1,5 @@
 #include <string.h>
+#include <math.h>
 #include "parser.h"
 
 int isSpaceCustom(char c){ //checks if the char has whitespace
