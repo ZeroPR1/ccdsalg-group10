@@ -114,7 +114,18 @@ ErrorStatus infixToPostfix(Queue* infix, Queue* postfix){
   while (!isEmptyQueue(infix) && keepGoing == 1){
     Token t = Dequeue(infix);
 
-    if (t.type == TOKE_OPERAND){
+    if (t.type == TOKEN
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      _OPERAND){
       Enqueue(postfix, t);
     }
     else if (t.type == TOKEN_LPAREN){
@@ -130,7 +141,7 @@ ErrorStatus infixToPostfix(Queue* infix, Queue* postfix){
           int precTop = getPrecedence(topOp.symbol);
           int isRightAssoc = isRightAssociative(t.symbol);
 
-          if ((!isRightAssoc && precT <= precTop) || (isRightAssoc && precTop)){
+          if ((!isRightAssoc && precT <= precTop) || (isRightAssoc && precT < precTop)){
             Enqueue(postfix, Pop(&opStack));
           } else {
             processingOps = 0;
@@ -145,7 +156,7 @@ ErrorStatus infixToPostfix(Queue* infix, Queue* postfix){
     else if (t.type == TOKEN_RPAREN){
       int foundLparen = 0;
       while (!isEmptyStack(&opStack) && foundLparen == 0){
-        Token opopped = Pop(&opStack);
+        Token popped = Pop(&opStack);
         if (popped.type == TOKEN_LPAREN){
           foundLparen = 1;
         } else {
