@@ -3,7 +3,7 @@
 
 int isSpaceCustom(char c){ //checks if the char has whitespace
   int result = 0;
-  if(c == ' ' || c == "\t" || c == '\n' || c == '\r'){
+  if(c == ' ' || c == '\t' || c == '\n' || c == '\r'){
       result = 1;
   }
   return result;
@@ -79,7 +79,7 @@ ErrorStatus tokenize(const char* input,  Queue* outputQueue){
       //catches invalid characters
       else {
         status = ERR_INVALID_CHAR;
-        keepGoing = 1; // kills the loop
+        keepGoing = 0; // kills the loop
       }
     }
 
