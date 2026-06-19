@@ -114,18 +114,7 @@ ErrorStatus infixToPostfix(Queue* infix, Queue* postfix){
   while (!isEmptyQueue(infix) && keepGoing == 1){
     Token t = Dequeue(infix);
 
-    if (t.type == TOKEN
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      _OPERAND){
+    if (t.type == TOKEN_OPERAND){
       Enqueue(postfix, t);
     }
     else if (t.type == TOKEN_LPAREN){
@@ -183,5 +172,4 @@ ErrorStatus infixToPostfix(Queue* infix, Queue* postfix){
   }
 
   return status;
-}
 }
