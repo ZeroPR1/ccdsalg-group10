@@ -16,3 +16,13 @@ int isDigitCustom(char c){
   }
   return result;
 }
+
+ErrorStatus tokenize(const char* input,  Queue* outputQueue){
+    ErrorStatus status = ERR_NONE; //start of with no errors
+    int i = 0; //intializes the index counter to 0
+    int len = strlen(input); //calculate the total number of characters
+    int keepGoing = 1; //assigned variable to control the main loop
+
+    
+    
+}
