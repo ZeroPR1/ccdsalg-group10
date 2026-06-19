@@ -40,6 +40,28 @@ ErrorStatus tokenize(const char* input,  Queue* outputQueue){
         t.symbol = '\0';
         Enqueue(outputQueue, t);
       }
+
+      else if(c == '('){
+        Token t;
+        t.type = TOKEN_RPAREN;
+        t.value = 0;
+        t.symbol = c;
+        Enqueue(outputQueue, t);    
+        i = i + 1;
+      }
+      else if(c == '+' || c == '-' || c == '*' || c == '/' || c == '%' || c == '^'){
+        Token t;
+        t.type = TOKEN_OPERATOR;
+        t.value = 0;
+        t.symbol = c;
+        Enqueue(outputQueue, t);    
+        i = i + 1;        
+      }
+      else {
+        status = ERR_INVALID_CHAR;
+        keepGoing = 1;
+      }
     }
-    
+
+  return status;
 }
