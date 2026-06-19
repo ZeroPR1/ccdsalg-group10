@@ -82,6 +82,95 @@ ErrorStatus tokenize(const char* input,  Queue* outputQueue){
         keepGoing = 0; // kills the loop
       }
     }
+  
+  return status;
+}
+
+int getPrecedence(char op){
+  int prec = -1;
+  if (op == '+' || op == '-'){
+    prec = 1; //lowest
+  } else if (op == '*' || op =='/' || op == '%'){
+    prec = 2; //middle
+  } else if (op == '^'){
+    prec = 3; //highest
+  }
+  return prec;
+}
+
+int isRightAssociative(char op){
+  int isRight = 0;
+  if (op == '^'){
+    isRight = 1; //exponentiation is right to left
+  }
+  return isRight;
+}
+
+ErrorStatus infixToPostfix(Queue* infix, Queue* postfix){
+  ErrorStatus status = ERR_NONE;
+  Stack opStack = CreateStack(); //Uses CreateStack from stack.c
+  int keepGoing = 1;
+
+  while (!isEmptyQueue(infix) && keepGoing == 1){
+    Token t = Dequeue(infix);
+
+    if (t.type == TOKE_OPERAND){
+      Enqueue(postfix, t);
+    }
+    else if (t.type == TOKEN_LPAREN){
+      Push(&opStack, t);
+    }
+    else if (t.type == TOKEN_OPERATOR){
+      int processingOps = 1;
+      while (!isEmptyStack(&opStack) && processingOps == 1){
+        Token topOp = Top(&opStack);
+
+        if (topOp.type == TOKEN_OPERATOR){
+          int precT = getPrecedence(t.symbol);
+          int precTop = getPrecedence(topOp.symbol);
+          int isRightAssoc = isRightAssociative(t.symbol);
+
+          if ((!isRightAssoc && precT <= precTop) || (isRightAssoc && precTop)){
+            Enqueue(postfix, Pop(&opStack));
+          } else {
+            processingOps = 0;
+          }
+        } else {
+          processingOps = 0;
+        }
+      }
+
+      Push(&opStack, t);
+    }
+    else if (t.type == TOKEN_RPAREN){
+      int foundLparen = 0;
+      while (!isEmptyStack(&opStack) && foundLparen == 0){
+        Token opopped = Pop(&opStack);
+        if (popped.type == TOKEN_LPAREN){
+          foundLparen = 1;
+        } else {
+          Enqueue(postfix, popped);
+        }
+      }
+
+      if (foundLparen == 0){
+        status = ERR_MISMATCH_PAREN;
+        keepGoing = 0;
+      }
+    }
+  }
+
+  while(!isEmptyStack(&opStack) && keepGoing == 1){
+    Token popped = Pop(&opStack);
+
+    if (popped.type == TOKEN_LPAREN || popped.type == TOKEN_RPAREN){
+      status = ERR_MISMATCH_PAREN;
+      keepGoing = 0;
+    } else {
+      Enqueue(postfix, popped);
+    }
+  }
 
   return status;
+}
 }
