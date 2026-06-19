@@ -14,11 +14,11 @@ typedef struct
 
 // Queue Function Prototypes
 Queue CreateQueue();
-void Enqueue(Queue* Q, Token x);
-Token Dequeue(Queue* Q);
-Token Head(Queue* Q);
-Token Tail(Queue* Q);
-int isEmptyQueue(Queue* Q);
-int isFullQueue(Queue* Q);
+void Enqueue(Queue *Q, Token x);
+Token Dequeue(Queue *Q);
+Token Head(Queue *Q);
+Token Tail(Queue *Q);
+int isEmptyQueue(Queue *Q);
+int isFullQueue(Queue *Q);
 
 #endif
