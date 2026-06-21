@@ -43,7 +43,7 @@ int main(){
         printError(currentStatus);
     }
     
-    printf("Execution Time: %f ms\n", time_taken); //
+    printf("Execution Time: %f ms\n", time_taken); //Prints the output
 
     return 0;
 }
