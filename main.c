@@ -33,4 +33,17 @@ int main(){
     if (currentStatus == ERR_NONE) {
         currentStatus = evaluatePostfix(&postfixQueue, &finalResult); // Runs the 3-Phase Pipeline
     }
+
+    clock_t end_time = clock();
+    double time_taken = ((double)(end_time - start_time) / CLOCKS_PER_SEC) * 1000.0; // Stops the timer
+    
+    if (currentStatus == ERR_NONE) {
+        printf("Final Result: %d\n", finalResult);
+    } else {
+        printError(currentStatus);
+    }
+    
+    printf("Execution Time: %f ms\n", time_taken); //
+
+    return 0;
 }
