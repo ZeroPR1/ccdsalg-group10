@@ -23,4 +23,6 @@ int main(){
     int finalResult = 0;
     
     printf("Evaluating Expression: %s\n", expression); //Initalizes the queues needed for the pipeline
+
+    clock_t start_time = clock(); //Starts the timer
 }
