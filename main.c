@@ -15,9 +15,7 @@ void printError(ErrorStatus status){ //helper function to print the error messag
 }
 
 int main(){
-    
-    const char* expression = "((5 + 3) * 2) ^ (1 + 1)"; //expeccted expression
-
+    const char* expression = "((5 + 3) * 2) ^ (1 + 1)"; //expected expression
     Queue infixQueue = CreateQueue();
     Queue postfixQueue = CreateQueue();
     int finalResult = 0;
@@ -25,4 +23,14 @@ int main(){
     printf("Evaluating Expression: %s\n", expression); //Initalizes the queues needed for the pipeline
 
     clock_t start_time = clock(); //Starts the timer
+
+    ErrorStatus currentStatus = tokenize(expression, &infixQueue);
+    
+    if (currentStatus == ERR_NONE) {
+        currentStatus = infixToPostfix(&infixQueue, &postfixQueue);
+    }
+    
+    if (currentStatus == ERR_NONE) {
+        currentStatus = evaluatePostfix(&postfixQueue, &finalResult); // Runs the 3-Phase Pipeline
+    }
 }
