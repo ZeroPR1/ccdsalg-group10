@@ -13,3 +13,8 @@ void printError(ErrorStatus status){ //helper function to print the error messag
         default: printf("Error Unknown\n"); break;
     }
 }
+
+int main(){
+    
+    const char* expression = "((5 + 3) * 2) ^ (1 + 1)"; //expeccted expression
+}
