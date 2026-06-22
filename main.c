@@ -3,7 +3,9 @@
 #include <string.h>
 #include <time.h>
 #include "parser.h"
-#define MAX_INPUT 1024
+
+// Define iteration count for timing
+#define ITERATIONS 10000 
 
 // Helper function to print the status messages
 void printStatus(ErrorStatus status)
@@ -24,26 +26,38 @@ void printStatus(ErrorStatus status)
 // Function that evaluates and times the arithmetic execution
 void evaluateExpression(const char *expression) 
 {
-    Queue infixQueue = CreateQueue();
-    Queue postfixQueue = CreateQueue();
     int finalResult = 0;
-    
-    printf("Evaluating Expression: %s\n", expression); // Initializes the queues needed for the pipeline
+    ErrorStatus currentStatus = ERR_NONE;
+
+    printf("Evaluating Expression: %s\n", expression); 
 
     clock_t start_time = clock(); // Starts the timer
 
-    ErrorStatus currentStatus = tokenize(expression, &infixQueue);
-    
-    if (currentStatus == ERR_NONE) {
-        currentStatus = infixToPostfix(&infixQueue, &postfixQueue);
-    }
-    
-    if (currentStatus == ERR_NONE) {
-        currentStatus = evaluatePostfix(&postfixQueue, &finalResult);  // Runs the 3-Phase Pipeline
+    // Loop ITERATIONS times to calculate timing
+    for (int i = 0; i < ITERATIONS; i++) {
+        
+        // Reset every iteration
+        Queue infixQueue = CreateQueue();
+        Queue postfixQueue = CreateQueue();
+        finalResult = 0; 
+        currentStatus = ERR_NONE;
+
+        currentStatus = tokenize(expression, &infixQueue);
+        
+        if (currentStatus == ERR_NONE) {
+            currentStatus = infixToPostfix(&infixQueue, &postfixQueue);
+        }
+        
+        if (currentStatus == ERR_NONE) {
+            currentStatus = evaluatePostfix(&postfixQueue, &finalResult);  
+        }
     }
 
     clock_t end_time = clock(); // Stops the timer
-    double time_taken = ((double)(end_time - start_time) / CLOCKS_PER_SEC) * 1000.0; // Stops the timer
+    
+    // Calculate total the average time per run (total execution time in milliseconds)
+    double total_time = ((double)(end_time - start_time) / CLOCKS_PER_SEC) * 1000.0; 
+    double time_taken = total_time / ITERATIONS; 
     
     if (currentStatus == ERR_NONE) {
         printf("Result: %d\n", finalResult);
@@ -51,7 +65,7 @@ void evaluateExpression(const char *expression)
         printStatus(currentStatus);
     }
     
-    printf("Execution Time: %f ms\n", time_taken); // Prints the output time in milliseconds
+    printf("Execution Time: %f ms\n", time_taken); // Prints the average time in milliseconds
 }
 
 
