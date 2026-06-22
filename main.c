@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include "parser.h"
+#define MAX_INPUT 1024
 
 // Helper function to print the status messages
 void printStatus(ErrorStatus status)
