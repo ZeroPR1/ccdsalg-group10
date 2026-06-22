@@ -78,7 +78,7 @@ void runFile(const char *filename)
     // If the file does not exist
     if (file == NULL) 
     {
-        printf("\nError: Could not find '%s'.\n", filename);
+        printf("\nError: File cannot be found!\n", filename);
     } 
     
     // If the file exists
