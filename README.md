@@ -11,4 +11,5 @@
 gcc main.c stack.c queue.c parser.c -o MCO1 -lm
 
 ### Step 2:
-MCO1
+For Windows: MCO1 or MCO1.exe
+For Linux/macOS: ./MCO1
