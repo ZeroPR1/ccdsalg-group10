@@ -1,7 +1,9 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
-#define MAX_TOKENS 150 
+// Can be adjusted as needed
+#define MAX_TOKENS 10000  // Max tokens
+#define MAX_INPUT 30000 // Max user input
 
 // Defines different types of tokens in an expression
 typedef enum 
@@ -10,12 +12,12 @@ typedef enum
     TOKEN_OPERATOR, // Operators (+, -, *, /, etc.)
     TOKEN_LPAREN,   // Left parenthesis "("
     TOKEN_RPAREN    // Right parenthesis ")"
-} TokenType;
+} TokenTypes;
 
 // Token Structure for the Stack and Queue
 typedef struct 
 {
-    TokenType type;
+    TokenTypes type;
     int value;
     char symbol;
 } Token;
